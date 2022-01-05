@@ -2,13 +2,24 @@ package hello.hello.spring;
 
 
 import hello.hello.spring.Service.MemberService;
+import hello.hello.spring.repo.JdbcMemberRepo;
+import hello.hello.spring.repo.JdbcTempleteMemberRepo;
 import hello.hello.spring.repo.MemberRepo;
-import hello.hello.spring.repo.MemoryMemberRepo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.sql.DataSource;
+
 @Configuration
 public class springconfig {
+
+    private DataSource dataSource;
+
+    @Autowired
+    public springconfig(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     @Bean
     public MemberService memberService(){
@@ -18,6 +29,7 @@ public class springconfig {
     @Bean
     public MemberRepo memberRepo(){
 
-        return new MemoryMemberRepo();
+       // return new MemoryMemberRepo();
+        return new JdbcTempleteMemberRepo(dataSource);
     }
 }
